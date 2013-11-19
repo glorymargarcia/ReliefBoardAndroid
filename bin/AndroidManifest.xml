@@ -7,13 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
-<<<<<<< HEAD
     
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-=======
->>>>>>> f4248b37ab956913a8b1a170acaab3f9aba5da05
 
     <application
         android:allowBackup="true"

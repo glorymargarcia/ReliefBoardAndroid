@@ -16,15 +16,10 @@ package com.stratpoint.reliefboard.adapter;
  * limitations under the License.
  */
 
-import java.util.Calendar; 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.stratpoint.reliefboard.PostObjectPOJO;
-import com.stratpoint.reliefboard.util.ImageLoaderUtil;
-import com.stratpoint.reliefboardandroid.R;
-
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +28,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
+import com.stratpoint.reliefboard.util.ImageLoaderUtil;
+import com.stratpoint.reliefboardandroid.R;
 
 public class EndlessAdapter extends ArrayAdapter<PostObjectPOJO> {
 	

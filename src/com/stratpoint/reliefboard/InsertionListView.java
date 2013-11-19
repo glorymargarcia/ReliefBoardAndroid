@@ -41,6 +41,8 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
+import com.stratpoint.reliefboard.animation.OnRowAdditionAnimationListener;
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboardandroid.R;
 
 /**

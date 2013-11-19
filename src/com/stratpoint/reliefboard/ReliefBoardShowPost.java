@@ -26,8 +26,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboardandroid.R;
 
 
@@ -264,7 +266,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 					e.getMessage();
 				}
 
-				adp= new EndlessAdapter(ReliefBoardShowPost.this, postObjectList , R.layout.list_view_post);
+				adp = new EndlessAdapter(ReliefBoardShowPost.this, postObjectList, R.layout.list_view_post);
 				listviewPost.setLoadingView(R.layout.loading_layout);
 				listviewPost.setAdapter(adp);
 				
