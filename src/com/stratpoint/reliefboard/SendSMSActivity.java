@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,6 +25,7 @@ public class SendSMSActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sendsms);
 
+		final EditText recipient = (EditText) findViewById(R.id.et_recipient);		
 		final EditText location = (EditText) findViewById(R.id.et_location);
 		final EditText name = (EditText) findViewById(R.id.et_name);
 		final EditText message = (EditText) findViewById(R.id.et_message);
@@ -33,7 +35,12 @@ public class SendSMSActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				sendSMS("260011", location.getText().toString() + "/" + name.getText().toString() + "/" + message.getText().toString());
+				TelephonyManager telephonyManager  = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+				if(telephonyManager.getNetworkOperatorName().equals("Globe Telecom-PH") || telephonyManager.getNetworkOperator().equals("51502"))
+					sendSMS("260011", location.getText().toString() + "/" + name.getText().toString() + "/" + message.getText().toString());
+
+				if(telephonyManager.getNetworkOperatorName().equals("SMART") || telephonyManager.getNetworkOperator().equals("51503"))
+					sendSMS("68009", location.getText().toString() + "/" + name.getText().toString() + "/" + message.getText().toString());
 			}
 		});
 
