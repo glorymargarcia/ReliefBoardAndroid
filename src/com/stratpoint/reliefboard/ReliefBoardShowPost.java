@@ -25,9 +25,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+<<<<<<< HEAD
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Toast;
+=======
+>>>>>>> 765fe63d83c035b193c99563f5ce6cba58b1f4e9
 
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
@@ -72,12 +75,13 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			if(mTelephonyManager.SIM_STATE_ABSENT == 1){
+			startActivity(new Intent(ReliefBoardShowPost.this, SendSMSActivity.class));
+			/*if(mTelephonyManager.SIM_STATE_ABSENT == 1){
 				sendSMS();	
 			} else {
 				Toast.makeText(getApplicationContext(), "Please insert sim card.", Toast.LENGTH_LONG).show();
-			}
-			return true;
+			}*/
+//			return true;
 		}
 		return false;
 	}

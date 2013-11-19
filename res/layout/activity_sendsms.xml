@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="10dp" >
+
+	<TableRow>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:text="Recipient"
+			android:visibility="gone" />
+
+		<EditText
+			android:id="@+id/et_recipient"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.7"
+			android:enabled="false"
+			android:inputType="number"
+			android:ems="10"
+			android:visibility="gone" />
+	</TableRow>
+
+	<TableRow>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:text="Location" />
+
+		<EditText
+			android:id="@+id/et_location"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.7"
+			android:ems="10"
+			android:inputType="text" />
+	</TableRow>
+
+	<TableRow>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:inputType="text"
+			android:text="Name" />
+
+		<EditText
+			android:id="@+id/et_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.7"
+			android:inputType="text" />
+	</TableRow>
+
+	<TableRow>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.3"
+			android:inputType="text"
+			android:text="Message" />
+
+		<EditText
+			android:id="@+id/et_message"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.7"
+			android:inputType="textMultiLine" />
+	</TableRow>
+
+	<Button
+		android:id="@+id/btn_send_sms"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Send"
+		android:layout_marginTop="10dp" />
+
+</TableLayout>
