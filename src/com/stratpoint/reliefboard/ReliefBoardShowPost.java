@@ -25,19 +25,26 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Toast;
 
+import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
 import com.stratpoint.reliefboardandroid.R;
 
-public class ReliefBoardShowPost extends Activity {
+
+public class ReliefBoardShowPost extends Activity implements EndlessListView.EndlessListener {
 
 	private SQLiteAdapter mySQLiteAdapter;
 	private List<PostObjectPOJO> postObjectList;
-	private InsertionListView listviewPost;
+	private EndlessListView listviewPost;
 	private PostBaseAdapter cAdapter;
 	private TelephonyManager mTelephonyManager;
+	private EndlessAdapter adp; 
+
+	private int offset = 0, limit = 10;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,12 @@ public class ReliefBoardShowPost extends Activity {
 
 		mySQLiteAdapter = new SQLiteAdapter(this);
 
-		listviewPost = (InsertionListView) findViewById(R.id.listview_Post);
+		listviewPost = (EndlessListView) findViewById(R.id.listview_Post);
+		offset = 0;
 
-		new MainOperation().execute("http://www.reliefboard.com/messages/feed/");
+
+
+		new MainOperation().execute("http://www.reliefboard.com/messages/feed/?offset=" + offset + "&limit=" + limit);
 	}
 
 	@Override
@@ -71,9 +81,23 @@ public class ReliefBoardShowPost extends Activity {
 		}
 		return false;
 	}
+
+	private void sendSMS() {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.putExtra("address", "260011");
+		intent.putExtra("sms_body", "LOCATION/YOUR NAME/MESSAGE ");
+		intent.setType("vnd.android-dir/mms-sms");
+		startActivity(intent);
+	}
+
+	@Override
+	public void loadData() {
+		new LoadMore().execute("http://www.reliefboard.com/messages/feed/?offset=" + offset + "&limit=" + limit);
+
+	}
+
 	private class MainOperation  extends AsyncTask<String, Void, String> {
 
-		//private final HttpClient Client = new DefaultHttpClient();
 		private String Error = null;
 		private ProgressDialog Dialog;
 		private SQLiteAdapter mySQLiteAdapter;
@@ -155,9 +179,6 @@ public class ReliefBoardShowPost extends Activity {
 
 		@SuppressWarnings("deprecation")
 		protected void onPostExecute(String content) {
-			// NOTE: You can call UI Element here.
-
-			// Close progress dialog
 
 
 			if (Error != null) {
@@ -165,10 +186,6 @@ public class ReliefBoardShowPost extends Activity {
 				Log.v("Output : ",""+Error);
 
 			} else {
-
-
-				/****************** Start Parse Response JSON Data *************/
-
 
 				JSONObject jsonResponse;
 
@@ -242,81 +259,6 @@ public class ReliefBoardShowPost extends Activity {
 
 					}
 
-					/*	for(Iterator iterator=jsonResponse.keys();iterator.hasNext();) {
-						String key = iterator.next().toString();
-
-						if(jsonResponse.get(key) instanceof JSONObject) {
-							JSONObject jsonItem = jsonResponse.getJSONObject(key);
-							Log.i("INVENUE", jsonItem.toString());
-							String result = jsonItem.optString("result").toString().trim();
-
-							JSONArray cast = jsonResponse.getJSONArray("result");
-
-							//result = result.substring(0, result.length() - 1);
-							//result = result.substring(1);
-							//Log.i("INVENUE Result ", ""+ result);
-							//JSONObject jsonResult= new JSONObject(result);
-							//JSONArray arrResults = jsonResult.to;
-							//for(Iterator iteratorResult=jsonResult.keys();iteratorResult.hasNext();) {
-								//String userKey = iteratorResult.next().toString();
-
-								//if(jsonUser.get(userKey) instanceof JSONObject) {
-									String appName = DatabaseUtils.sqlEscapeString(jsonItem.optString("app_name").toString().trim());
-									String dateCreated = jsonItem.optString("date_created").toString().trim();
-									String fbPostLink = URLDecoder.decode(jsonItem.optString("fb_post_link").toString().trim());
-									String postID = jsonItem.optString("id").toString().trim();
-									String logo = jsonItem.optString("logo").toString().trim();
-									String message = URLDecoder.decode(jsonItem.optString("message").toString().trim());
-									String parentID = jsonItem.optString("parent_id").toString().trim();
-									String placeTag = URLDecoder.decode(jsonItem.optString("place_tag").toString().trim());
-									String sender = URLDecoder.decode(jsonItem.optString("sender").toString().trim());
-									String senderNumber = URLDecoder.decode(jsonItem.optString("sender_number").toString().trim());
-									String source = jsonItem.optString("source").toString().trim();
-									String sourceType = jsonItem.optString("source_type").toString().trim();
-									String status = jsonItem.optString("source_type").toString().trim();
-
-
-									mySQLiteAdapter.execQuery("INSERT INTO post_tb (appName,dateCreated, fbPostLink, postID, logo, message, parentID, placeTag, " +
-											"sender, sender_number, source, source_type, status) VALUES (" +
-											"" + DatabaseUtils.sqlEscapeString(appName) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(dateCreated) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(fbPostLink) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(postID) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(logo) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(message) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(parentID) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(placeTag) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(sender) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(senderNumber) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(source) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(sourceType) + ", " +
-											"" + DatabaseUtils.sqlEscapeString(status) + " " +
-											")");
-
-									PostObjectPOJO object = new PostObjectPOJO();
-									object.SetAppName(appName);
-									object.SetDateCreated(dateCreated);
-									object.SetFbPostLink(fbPostLink);
-									object.SetPostID(postID);
-									object.SetLogo(logo);
-									object.SetMessage(message);
-									object.SetParentID(parentID);
-									object.SetPlaceTag(placeTag);
-									object.SetSender(sender);
-									object.SetSenderNumber(senderNumber);
-									object.SetSource(source);
-									object.SetSourceType(sourceType);
-									object.SetStatus(status);
-									postObjectList.add(object);
-								//}
-
-
-
-							}
-						}
-
-
-					 */
 				}
 
 				catch (JSONException e) {
@@ -325,23 +267,194 @@ public class ReliefBoardShowPost extends Activity {
 					e.getMessage();
 				}
 
-				cAdapter = new PostBaseAdapter(ReliefBoardShowPost.this, R.layout.list_view_post, postObjectList);
-				listviewPost.setAdapter(cAdapter);
-				listviewPost.setData(postObjectList);
+				adp= new EndlessAdapter(ReliefBoardShowPost.this, postObjectList , R.layout.list_view_post);
+				listviewPost.setLoadingView(R.layout.loading_layout);
+				listviewPost.setAdapter(adp);
+				
+				listviewPost.setListener(ReliefBoardShowPost.this);
+				//listviewPost.setData(postObjectList);
 				mySQLiteAdapter.close();
 
 				Dialog.dismiss();
+			}
+		}
+
+	}
+	
+	private class LoadMore  extends AsyncTask<String, Void, String> {
+
+		private String Error = null;
+		//private ProgressDialog Dialog;
+		private SQLiteAdapter mySQLiteAdapter;
+
+
+		protected void onPreExecute() {
+		
+			mySQLiteAdapter = new SQLiteAdapter(ReliefBoardShowPost.this);
+		}
+
+
+		protected String doInBackground(String... urls) {
+
+			/************ Make Post Call To Web Server ***********/
+			BufferedReader reader=null;
+			InputStream inputStream = null;
+			String Content = "";
+
+			mySQLiteAdapter.openToWrite();
+			try
+			{ 
+
+				// Defined URL  where to send data
+				String myUrl = urls[0];
+				DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
+				//HttpPost httppost = new HttpPost(myUrl);
+				HttpGet httpget = new HttpGet(myUrl);
+
+				httpget.setHeader("Content-type", "application/json");
+
+				HttpResponse response = httpclient.execute(httpget);           
+				HttpEntity entity = response.getEntity();
+
+				inputStream = entity.getContent();
+
+				byte[] buffer = new byte[1024];
+				int length = 0;
+				StringBuffer str = new StringBuffer();
+
+				while((length = inputStream.read(buffer)) != -1) {
+					str.append(new String(buffer, 0, length));
+				}
+
+				Log.i("Invenue", "result: " + str.toString());
+
+				Content = str.toString();
+
+			}
+			catch(Exception ex)
+			{
+				Error = ex.getMessage();
+			}
+			finally
+			{
+				try
+				{
+
+					reader.close();
+				}
+
+				catch(Exception ex) {}
+			}
+
+			return Content;
+		}
+
+		@SuppressWarnings("deprecation")
+		protected void onPostExecute(String content) {
+
+
+			if (Error != null) {
+
+				Log.v("Output : ",""+Error);
+
+			} else {
+
+				JSONObject jsonResponse;
+
+				ArrayList<PostObjectPOJO> ObjectList = new ArrayList<PostObjectPOJO>();
+				try {
+					//ClearCache.trimCache(MainPage.this);
+					
+
+					jsonResponse = new JSONObject(content);
+
+					JSONArray arrResults = jsonResponse.getJSONObject("data").getJSONArray("result");
+					Log.v("Test ", ""+arrResults.toString());
+					for (int i=0; i<arrResults.length(); i++) {
+						JSONObject result = arrResults.getJSONObject(i);
+
+
+						String appName = DatabaseUtils.sqlEscapeString(result.getString("app_name").toString().trim());
+						String dateCreated = result.getString("date_created").toString().trim();
+						String fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
+						String postID = result.getString("id").toString().trim();
+						String logo = result.getString("logo").toString().trim();
+						String message = URLDecoder.decode(URLDecoder.decode(result.getString("message")));
+						String parentID = result.getString("parent_id").toString().trim();
+						String placeTag = URLDecoder.decode(URLDecoder.decode(result.getString("place_tag").toString().trim()));
+						String sender = URLDecoder.decode(URLDecoder.decode(result.getString("sender").toString().trim()));
+						String senderNumber = URLDecoder.decode(URLDecoder.decode(result.getString("sender_number").toString().trim()));
+						String source =result.getString("source").toString().trim();
+						String sourceType = result.getString("source_type").toString().trim();
+						String status = result.getString("source_type").toString().trim();
+
+
+						if (dateCreated == null || dateCreated.equals("")){
+
+						}
+						else
+						{
+							mySQLiteAdapter.execQuery("INSERT INTO post_tb (appName,dateCreated, fbPostLink, postID, logo, message, parentID, placeTag, " +
+									"sender, sender_number, source, source_type, status) VALUES (" +
+									"" + DatabaseUtils.sqlEscapeString(appName) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(dateCreated) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(fbPostLink) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(postID) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(logo) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(message) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(parentID) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(placeTag) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(sender) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(senderNumber) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(source) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(sourceType) + ", " +
+									"" + DatabaseUtils.sqlEscapeString(status) + " " +
+									")");
+
+							PostObjectPOJO object = new PostObjectPOJO();
+							object.SetAppName(appName);
+							object.SetDateCreated(dateCreated);
+							Log.v("Date Created", ""+dateCreated);
+							object.SetFbPostLink(fbPostLink);
+							object.SetPostID(postID);
+							object.SetLogo(logo);
+							object.SetMessage(message);
+							object.SetParentID(parentID);
+							object.SetPlaceTag(placeTag);
+							object.SetSender(sender);
+							object.SetSenderNumber(senderNumber);
+							object.SetSource(source);
+							object.SetSourceType(sourceType);
+							object.SetStatus(status);
+							//listviewPost.addRow(object);
+							postObjectList.add(object);
+							ObjectList.add(object);
+
+						}
+
+					}
+
+				}
+
+				catch (JSONException e) {
+
+					e.printStackTrace();
+					e.getMessage();
+				}
+
+
+				listviewPost.addNewData(ObjectList);
+				mySQLiteAdapter.close();
+
+			
 
 			}
 		}
 
 	}
 
-	private void sendSMS() {
-		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.putExtra("address", "260011");
-		intent.putExtra("sms_body", "LOCATION/YOUR NAME/MESSAGE ");
-		intent.setType("vnd.android-dir/mms-sms");
-		startActivity(intent);
-	}
+	
+
+
+
 }
