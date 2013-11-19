@@ -10,7 +10,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.3"
-			android:text="Recipient" />
+			android:text="Recipient"
+			android:visibility="gone" />
 
 		<EditText
 			android:id="@+id/et_recipient"
@@ -20,7 +21,7 @@
 			android:enabled="false"
 			android:inputType="number"
 			android:ems="10"
-			android:text="260011" />
+			android:visibility="gone" />
 	</TableRow>
 
 	<TableRow>
@@ -36,6 +37,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.7"
+			android:ems="10"
 			android:inputType="text" />
 	</TableRow>
 
