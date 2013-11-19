@@ -25,7 +25,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
@@ -62,12 +61,13 @@ public class ReliefBoardShowPost extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			if(mTelephonyManager.SIM_STATE_ABSENT == 1){
+			startActivity(new Intent(ReliefBoardShowPost.this, SendSMSActivity.class));
+			/*if(mTelephonyManager.SIM_STATE_ABSENT == 1){
 				sendSMS();	
 			} else {
 				Toast.makeText(getApplicationContext(), "Please insert sim card.", Toast.LENGTH_LONG).show();
-			}
-			return true;
+			}*/
+//			return true;
 		}
 		return false;
 	}
