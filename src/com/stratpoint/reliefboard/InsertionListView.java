@@ -40,7 +40,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboardandroid.R;
 
@@ -52,7 +51,7 @@ import com.stratpoint.reliefboardandroid.R;
  * corresponding item in the ListView.
  */
 @SuppressLint("NewApi")
-public class InsertionListView extends ListView {
+public class InsertionListView extends ListView  {
 
     private static final int NEW_ROW_DURATION = 500;
     private static final int OVERSHOOT_INTERPOLATOR_TENSION = 5;
