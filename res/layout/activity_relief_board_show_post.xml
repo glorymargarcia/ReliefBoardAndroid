@@ -9,7 +9,7 @@
     tools:context=".ReliefBoardShowPost" 
     android:background="#EFEFEF">
 
-    <com.stratpoint.reliefboardandroid.InsertionListView
+    <com.stratpoint.reliefboard.InsertionListView
         android:id="@+id/listview_Post"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +17,6 @@
         android:layout_alignParentTop="true"
         android:divider="#838383" 
         android:dividerHeight="1dp">
-    </com.stratpoint.reliefboardandroid.InsertionListView>
+    </com.stratpoint.reliefboard.InsertionListView>
 
 </RelativeLayout>

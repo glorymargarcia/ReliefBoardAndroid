@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard;
 
 /**
  * This listener is used to determine when the animation of a new row addition

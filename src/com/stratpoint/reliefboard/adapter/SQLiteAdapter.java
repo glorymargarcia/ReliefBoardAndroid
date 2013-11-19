@@ -1,5 +1,5 @@
 
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard;
 
 public class PostObjectPOJO {
 	private String app_name; 

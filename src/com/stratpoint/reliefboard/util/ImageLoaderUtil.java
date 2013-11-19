@@ -1,4 +1,4 @@
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard.util;
 
 import java.io.File;
 

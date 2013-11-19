@@ -1,7 +1,9 @@
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.stratpoint.reliefboardandroid.R;
 
 import android.app.Activity;
 import android.content.Intent;

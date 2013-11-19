@@ -1,4 +1,4 @@
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -27,6 +26,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
+import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
+import com.stratpoint.reliefboardandroid.R;
 
 public class ReliefBoardShowPost extends Activity {
 
@@ -59,7 +62,7 @@ public class ReliefBoardShowPost extends Activity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings:
-			if(mTelephonyManager.SIM_STATE_ABSENT == 0){
+			if(mTelephonyManager.SIM_STATE_ABSENT == 1){
 				sendSMS();	
 			} else {
 				Toast.makeText(getApplicationContext(), "Please insert sim card.", Toast.LENGTH_LONG).show();
@@ -322,8 +325,6 @@ public class ReliefBoardShowPost extends Activity {
 					e.getMessage();
 				}
 
-
-
 				cAdapter = new PostBaseAdapter(ReliefBoardShowPost.this, R.layout.list_view_post, postObjectList);
 				listviewPost.setAdapter(cAdapter);
 				listviewPost.setData(postObjectList);
@@ -337,19 +338,10 @@ public class ReliefBoardShowPost extends Activity {
 	}
 
 	private void sendSMS() {
-		/*		Uri uri = null;
-				if(mTelephonyManager.getNetworkOperatorName().equals("Globe Telecom-PH")){
-					uri = Uri.parse("smsto:23737102");			
-				} else if(mTelephonyManager.getNetworkOperatorName().equals("SMART")){
-					uri = Uri.parse("smsto:68009");
-				} else {
-					uri = Uri.parse("smsto:260011");
-				}*/
-
-		Uri uri = Uri.parse("smsto:260011");
-
-		Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.putExtra("address", "260011");
 		intent.putExtra("sms_body", "LOCATION/YOUR NAME/MESSAGE ");
+		intent.setType("vnd.android-dir/mms-sms");
 		startActivity(intent);
 	}
 }

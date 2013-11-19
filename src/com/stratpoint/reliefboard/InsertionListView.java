@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package com.stratpoint.reliefboardandroid;
+package com.stratpoint.reliefboard;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -37,14 +38,11 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
+import com.stratpoint.reliefboardandroid.R;
 
 /**
  * This ListView displays a set of ListItemObjects. By calling addRow with a new

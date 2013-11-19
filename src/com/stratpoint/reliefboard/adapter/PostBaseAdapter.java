@@ -1,5 +1,4 @@
-package com.stratpoint.reliefboardandroid;
-import java.util.ArrayList; 
+package com.stratpoint.reliefboard.adapter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,15 +6,17 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.stratpoint.reliefboard.PostObjectPOJO;
+import com.stratpoint.reliefboard.util.ImageLoaderUtil;
+import com.stratpoint.reliefboardandroid.R;
 
 
 public class PostBaseAdapter extends BaseAdapter{
