@@ -22,15 +22,17 @@ public final class R {
     }
     public static final class drawable {
         public static final int bg_reliefboard=0x7f020000;
-        public static final int favicon=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
+        public static final int button_clicked=0x7f020001;
+        public static final int button_not_clicked=0x7f020002;
+        public static final int button_rounded=0x7f020003;
+        public static final int favicon=0x7f020004;
+        public static final int ic_launcher=0x7f020005;
     }
     public static final class id {
         public static final int action_settings=0x7f080015;
         public static final int btn_send_sms=0x7f080006;
         public static final int btn_sms=0x7f080000;
         public static final int button1=0x7f080012;
-        public static final int button2=0x7f080013;
         public static final int et_location=0x7f080003;
         public static final int et_message=0x7f080005;
         public static final int et_name=0x7f080004;
@@ -46,6 +48,7 @@ public final class R {
         public static final int textview_date=0x7f08000a;
         public static final int tv_location=0x7f080011;
         public static final int tv_message=0x7f08000e;
+        public static final int tv_responses=0x7f080013;
         public static final int tv_title=0x7f08000d;
         public static final int tv_user=0x7f080010;
     }
@@ -64,6 +67,9 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int hello_world=0x7f050002;
+        /**  List of posts 
+         */
+        public static final int responses=0x7f050004;
         public static final int send_sms=0x7f050003;
     }
     public static final class style {

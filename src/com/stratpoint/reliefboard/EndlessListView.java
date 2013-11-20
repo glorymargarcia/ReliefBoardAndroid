@@ -19,15 +19,15 @@ package com.stratpoint.reliefboard;
 import java.util.List;
 
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 public class EndlessListView extends ListView implements OnScrollListener {
 	

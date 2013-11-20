@@ -14,14 +14,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.stratpoint.reliefboard.PostObjectPOJO;
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboard.util.ImageLoaderUtil;
 import com.stratpoint.reliefboardandroid.R;
 
 
 public class PostBaseAdapter extends BaseAdapter{
 	HashMap<PostObjectPOJO, Integer> mIdMap = new HashMap<PostObjectPOJO, Integer>();
-	List<PostObjectPOJO> data;
+	List<com.stratpoint.reliefboard.model.PostObjectPOJO> data;
 	Context mContext;
 	int mLayoutViewResourceId;
 	int mCounter;
@@ -70,6 +70,7 @@ public class PostBaseAdapter extends BaseAdapter{
 			holder.tvMessage = (TextView) row.findViewById(R.id.tv_message);
 			holder.tvUser = (TextView) row.findViewById(R.id.tv_user);
 			holder.tvLocation = (TextView) row.findViewById(R.id.tv_location);
+			holder.tvResponses = (TextView) row.findViewById(R.id.tv_responses);
 			row.setTag(holder);
 		}
 		else
@@ -171,6 +172,7 @@ public class PostBaseAdapter extends BaseAdapter{
 
 
 	class Holder {
+		public View tvResponses;
 		TextView tvDate;
 		TextView tvTitle;
 		TextView tvMessage;
