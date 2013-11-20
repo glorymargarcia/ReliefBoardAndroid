@@ -38,6 +38,7 @@
         </activity>
         <activity android:name="com.stratpoint.reliefboard.SendSMSActivity"
         		  android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name="com.stratpoint.reliefboard.ResponseActivity" />
     </application>
 
 </manifest>

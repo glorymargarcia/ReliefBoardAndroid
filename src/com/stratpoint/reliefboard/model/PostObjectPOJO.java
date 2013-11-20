@@ -1,6 +1,8 @@
 package com.stratpoint.reliefboard.model;
 
-public class PostObjectPOJO {
+import android.os.Parcel;
+
+public class PostObjectPOJO extends BaseModel {
 	private String app_name; 
 	private	String date_created;
 	private String fb_post_link;
@@ -14,6 +16,54 @@ public class PostObjectPOJO {
 	private String source;
 	private String source_type;
 	private String status; 
+	
+	
+	public PostObjectPOJO(Parcel in){
+		readFromParcel(in);
+	}
+	
+	public PostObjectPOJO() {
+	}
+
+	@Override
+	public int describeContents(){
+		return 0;
+	}
+	
+	@Override
+	public void writeToParcel(Parcel dest, int flags){
+		dest.writeString(app_name);
+		dest.writeString(date_created);
+		dest.writeString(fb_post_link);
+		dest.writeString(post_id);
+		dest.writeString(logo);
+		dest.writeString(message);
+		dest.writeString(parent_id);
+		dest.writeString(place_tag);
+		dest.writeString(sender);
+		dest.writeString(sender_number);
+		dest.writeString(source);
+		dest.writeString(source_type);
+		dest.writeString(status);
+	}
+	
+	@Override
+	public void readFromParcel(Parcel in){
+		app_name = in.readString();
+		date_created = in.readString();
+		fb_post_link = in.readString();
+		post_id = in.readString();
+		logo = in.readString();
+		message = in.readString();
+		parent_id = in.readString();
+		place_tag = in.readString();
+		sender = in.readString();
+		sender_number = in.readString();
+		source = in.readString();
+		source_type = in.readString();
+		status = in.readString();
+		
+	}
 	
 	public  void SetStatus(String stat){
 		status =  stat;

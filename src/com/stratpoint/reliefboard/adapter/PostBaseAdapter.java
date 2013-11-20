@@ -9,10 +9,12 @@ import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboard.util.ImageLoaderUtil;
@@ -70,7 +72,6 @@ public class PostBaseAdapter extends BaseAdapter{
 			holder.tvMessage = (TextView) row.findViewById(R.id.tv_message);
 			holder.tvUser = (TextView) row.findViewById(R.id.tv_user);
 			holder.tvLocation = (TextView) row.findViewById(R.id.tv_location);
-			holder.tvResponses = (TextView) row.findViewById(R.id.tv_responses);
 			row.setTag(holder);
 		}
 		else
@@ -171,14 +172,13 @@ public class PostBaseAdapter extends BaseAdapter{
 	}
 
 
-	class Holder {
-		public View tvResponses;
-		TextView tvDate;
-		TextView tvTitle;
-		TextView tvMessage;
-		TextView tvUser;
-		TextView tvLocation;
-		ImageView ivUser;
+	private class Holder {
+		public TextView tvDate;
+		public TextView tvTitle;
+		public TextView tvMessage;
+		public TextView tvUser;
+		public TextView tvLocation;
+		public ImageView ivUser;
 	}
 
 

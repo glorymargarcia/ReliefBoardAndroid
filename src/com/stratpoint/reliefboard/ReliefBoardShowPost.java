@@ -29,7 +29,9 @@ import android.view.MenuItem;
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
+import com.stratpoint.reliefboard.listener.PostActionListener;
 import com.stratpoint.reliefboard.model.PostObjectPOJO;
+import com.stratpoint.reliefboard.util.ReliefBoardConstants;
 import com.stratpoint.reliefboardandroid.R;
 
 
@@ -41,6 +43,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 	private PostBaseAdapter cAdapter;
 	private TelephonyManager mTelephonyManager;
 	private EndlessAdapter adp; 
+	private int mPostPosition;
 
 	private int offset = 0, limit = 10;
 
@@ -81,6 +84,18 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		return false;
 	}
 
+	private final PostActionListener mPostActionListener = new PostActionListener() {
+		
+		@Override
+		public void onResponseClick(PostObjectPOJO post, int position) {
+			mPostPosition = position;
+			Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
+//			intent.putExtra(ReliefBoardConstants.Extra.POST, post);
+			intent.putExtra("post_id", post.GetPostID());
+			startActivity(intent);
+		}
+	};
+	
 	private void sendSMS() {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.putExtra("address", "260011");
@@ -267,6 +282,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 				}
 
 				adp = new EndlessAdapter(ReliefBoardShowPost.this, postObjectList, R.layout.list_view_post);
+				adp.setPostActionListener(mPostActionListener);
 				listviewPost.setLoadingView(R.layout.loading_layout);
 				listviewPost.setAdapter(adp);
 				

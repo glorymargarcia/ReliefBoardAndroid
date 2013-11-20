@@ -1,5 +1,8 @@
 package com.stratpoint.reliefboard.listener;
 
+import com.stratpoint.reliefboard.model.PostObjectPOJO;
 
-public class PostActionListener {
+
+public interface PostActionListener {
+	public void onResponseClick(PostObjectPOJO post, int position);
 }

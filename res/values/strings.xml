@@ -9,4 +9,7 @@
     <!-- List of posts -->
     <string name="responses">Responses</string>
     
+    <!-- app -->
+    <string name="app_id">2b198w.reliefboard.web</string>
+    
 </resources>

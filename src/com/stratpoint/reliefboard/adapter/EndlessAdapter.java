@@ -29,42 +29,45 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.stratpoint.reliefboard.listener.PostActionListener;
 import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboard.util.ImageLoaderUtil;
 import com.stratpoint.reliefboardandroid.R;
 
 public class EndlessAdapter extends ArrayAdapter<PostObjectPOJO> {
 	
-	private List<PostObjectPOJO> data;
+	private List<PostObjectPOJO> mData;
+	private PostActionListener mPostActionListener;
 	private Context ctx;
 	private int layoutId;
 	
 	public EndlessAdapter(Context ctx, List<PostObjectPOJO> itemList, int layoutId) {
 		super(ctx, layoutId);
-		this.data = itemList;
+		this.mData = itemList;
 		this.ctx = ctx;
 		this.layoutId = layoutId;
 	}
 
 	@Override
 	public int getCount() {		
-		return data.size() ;
+		return mData.size() ;
 	}
 
 	@Override
 	public PostObjectPOJO getItem(int position) {		
-		return data.get(position);
+		return mData.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {		
-		return data.get(position).hashCode();
+		return mData.get(position).hashCode();
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		Holder holder = null;
+		final PostObjectPOJO post = mData.get(position);
 		
 		if(row == null) {
 			LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,16 +79,33 @@ public class EndlessAdapter extends ArrayAdapter<PostObjectPOJO> {
 			holder.tvMessage = (TextView) row.findViewById(R.id.tv_message);
 			holder.tvUser = (TextView) row.findViewById(R.id.tv_user);
 			holder.tvLocation = (TextView) row.findViewById(R.id.tv_location);
+			holder.response = (TextView) row.findViewById(R.id.tv_responses);
 			row.setTag(holder);
 		}
 		else
 		{
 			holder = (Holder)row.getTag();
 		}
+		
+		View.OnClickListener onClickListener = new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(mPostActionListener != null)
+					switch (v.getId()) {
+					case R.id.tv_responses:
+						mPostActionListener.onResponseClick(post, position);
+						break;
+					}
+				
+			}
+		};
+		
+		holder.response.setOnClickListener(onClickListener);
+		
+		Log.v("Date", ""+mData.get(position).GetDateCreated());
 
-		Log.v("Date", ""+data.get(position).GetDateCreated());
-
-		long timeStampCreated = Long.parseLong(data.get(position).GetDateCreated());
+		long timeStampCreated = Long.parseLong(mData.get(position).GetDateCreated());
 		Calendar dateCreated = getDateCurrentTimeZone(timeStampCreated);
 		Calendar dateNow = Calendar.getInstance();
 		long milliseconds1 = dateCreated.getTimeInMillis();
@@ -135,38 +155,38 @@ public class EndlessAdapter extends ArrayAdapter<PostObjectPOJO> {
 			holder.tvDate.setText(String.valueOf(days) + " days ago");
 		}
 
-		if (data.get(position).GetAppName() == null || data.get(position).GetAppName().equals("") || data.get(position).GetAppName().equalsIgnoreCase("'null'")){
+		if (mData.get(position).GetAppName() == null || mData.get(position).GetAppName().equals("") || mData.get(position).GetAppName().equalsIgnoreCase("'null'")){
 			holder.tvTitle.setText("");
 		}
 		else
 		{	
-		holder.tvTitle.setText("from: " + data.get(position).GetAppName());
+		holder.tvTitle.setText("from: " + mData.get(position).GetAppName());
 		}
-		if (data.get(position).GetLogo() == null ||data.get(position).GetLogo().equals("") || data.get(position).GetLogo().equals("null")){
+		if (mData.get(position).GetLogo() == null ||mData.get(position).GetLogo().equals("") || mData.get(position).GetLogo().equals("null")){
 			holder.ivUser.setVisibility(View.GONE);
 		}
 		else
 		{
 			holder.ivUser.setVisibility(View.VISIBLE);
-			ImageLoaderUtil.getInstance(ctx).displayImage(data.get(position).GetLogo(), holder.ivUser);
+			ImageLoaderUtil.getInstance(ctx).displayImage(mData.get(position).GetLogo(), holder.ivUser);
 		}
 
-		holder.tvMessage.setText(data.get(position).GetMessage() + "\n" + data.get(position).GetSenderNumber());
+		holder.tvMessage.setText(mData.get(position).GetMessage() + "\n" + mData.get(position).GetSenderNumber());
 		
-		if (data.get(position).GetSender() == null || data.get(position).GetSender().equals("")|| data.get(position).GetSender().equalsIgnoreCase("'null'") || data.get(position).GetSender().equalsIgnoreCase("null")){
+		if (mData.get(position).GetSender() == null || mData.get(position).GetSender().equals("")|| mData.get(position).GetSender().equalsIgnoreCase("'null'") || mData.get(position).GetSender().equalsIgnoreCase("null")){
 			holder.tvUser.setText("");
 		}
 		else
 		{
-			holder.tvUser.setText(data.get(position).GetSender());
+			holder.tvUser.setText(mData.get(position).GetSender());
 		}
 		
-		if (data.get(position).GetPlaceTag() == null || data.get(position).GetPlaceTag().equals("")|| data.get(position).GetPlaceTag().equalsIgnoreCase("'null'")|| data.get(position).GetPlaceTag().equalsIgnoreCase("null")){
+		if (mData.get(position).GetPlaceTag() == null || mData.get(position).GetPlaceTag().equals("")|| mData.get(position).GetPlaceTag().equalsIgnoreCase("'null'")|| mData.get(position).GetPlaceTag().equalsIgnoreCase("null")){
 			holder.tvLocation.setText("");
 		}
 		else
 		{
-			holder.tvLocation.setText(data.get(position).GetPlaceTag());
+			holder.tvLocation.setText(mData.get(position).GetPlaceTag());
 		}
 		
 		return row;
@@ -179,15 +199,17 @@ public class EndlessAdapter extends ArrayAdapter<PostObjectPOJO> {
 		cal.setTime(date);
 		return cal;
 	}
-	class Holder {
-		TextView tvDate;
-		TextView tvTitle;
-		TextView tvMessage;
-		TextView tvUser;
-		TextView tvLocation;
-		ImageView ivUser;
+	private class Holder {
+		public TextView tvDate;
+		public TextView tvTitle;
+		public TextView tvMessage;
+		public TextView tvUser;
+		public TextView tvLocation;
+		public TextView response;
+		public ImageView ivUser;
 	}
 
-	
-
+	public void setPostActionListener(PostActionListener listener){
+		mPostActionListener = listener;
+	}
 }
