@@ -26,13 +26,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.Toast;
-
-
-
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
@@ -50,11 +43,8 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 	private PostBaseAdapter cAdapter;
 	private TelephonyManager mTelephonyManager;
 	private EndlessAdapter adp; 
-<<<<<<< HEAD
 	private int mPostPosition;
 
-=======
->>>>>>> 522f646c93c1d4b6be0b0b4516ea02f7cd2c3a29
 	private int offset = 0, limit = 10;
 
 	@Override
@@ -101,7 +91,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 			mPostPosition = position;
 			Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
 //			intent.putExtra(ReliefBoardConstants.Extra.POST, post);
-			intent.putExtra("post_id", post.GetPostID());
+			intent.putExtra(ReliefBoardConstants.Extra.POST_ID, post.GetPostID());
 			startActivity(intent);
 		}
 	};
@@ -229,7 +219,9 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 						String appName = DatabaseUtils.sqlEscapeString(result.getString("app_name").toString().trim());
 						String dateCreated = result.getString("date_created").toString().trim();
-						String fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
+						String fbPostLink = "";
+						if(result.has("fb_post_link"))
+							fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
 						String postID = result.getString("id").toString().trim();
 						String logo = result.getString("logo").toString().trim();
 						String message = URLDecoder.decode(URLDecoder.decode(result.getString("message")));
