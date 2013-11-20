@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
+
 import com.stratpoint.reliefboard.listener.PostActionListener;
 import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboard.util.ReliefBoardConstants;
@@ -43,8 +44,15 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 	private PostBaseAdapter cAdapter;
 	private TelephonyManager mTelephonyManager;
 	private EndlessAdapter adp; 
+<<<<<<< HEAD
 	private int mPostPosition;
 
+=======
+
+	private int mPostPosition;
+
+
+>>>>>>> bb99825de3f7b180ec07e67d45b7746b85edbe73
 	private int offset = 0, limit = 10;
 
 	@Override
@@ -74,12 +82,8 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			startActivity(new Intent(ReliefBoardShowPost.this, SendSMSActivity.class));
-			/*if(mTelephonyManager.SIM_STATE_ABSENT == 1){
-				sendSMS();	
-			} else {
-				Toast.makeText(getApplicationContext(), "Please insert sim card.", Toast.LENGTH_LONG).show();
-			}*/
-//			return true;
+		case R.id.post_message:
+			startActivity(new Intent(ReliefBoardShowPost.this, PostMessage.class));
 		}
 		return false;
 	}
