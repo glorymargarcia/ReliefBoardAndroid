@@ -1,5 +1,6 @@
 package com.stratpoint.reliefboard;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.stratpoint.reliefboard.loader.ResponseLoader;
 import com.stratpoint.reliefboard.util.ReliefBoardConstants;
 import com.stratpoint.reliefboardandroid.R;
@@ -26,6 +28,10 @@ public class ResponseActivity extends SherlockFragmentActivity implements Loader
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_response);
+
+		getSupportActionBar().setTitle("Responses");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setIcon(android.R.color.transparent);
 		
 		if(getIntent().getExtras() != null) {
 //			mPost = getIntent().getExtras().getParcelable(ReliefBoardConstants.Extra.POST);
@@ -61,7 +67,17 @@ public class ResponseActivity extends SherlockFragmentActivity implements Loader
 		
 		@Override
 		public void onLoadFinished(Loader<JSONObject> loader, JSONObject result) {
-			Log.d("RespondResult", result.toString());
+			String status;
+			try {
+				status = result.getString("status");
+				
+				if(status.equals("Success")){
+					mName.setText("");
+					mMessage.setText("");
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 			
 //			RESPONSE
 //			{"compress_output":true,"memory_usage":"1.07MB","method":"POST","status":"Success","ellapsed_time":8.4183828830719}
@@ -71,6 +87,14 @@ public class ResponseActivity extends SherlockFragmentActivity implements Loader
 		public void onLoaderReset(Loader<JSONObject> arg0) { }
 	};
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == android.R.id.home) {
+			finish();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	@Override
 	public Loader<JSONObject> onCreateLoader(int arg0, Bundle arg1) { return null; }
 
