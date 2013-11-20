@@ -81,7 +81,8 @@
 		android:layout_alignParentRight="true"
 		android:layout_below="@+id/linearLayout2"
 		android:layout_marginTop="5dip"
-		android:orientation="horizontal" >
+		android:orientation="horizontal"
+		android:layout_marginRight="10dip" >
 
 		<Button
 			android:id="@+id/button1"
@@ -95,7 +96,11 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:padding="5dp"
-			android:text="@string/responses" />
+			android:text="@string/responses"
+			android:textColor="#FFFFFF"
+			android:textStyle="bold"
+			android:textSize="14sp"
+			android:background="@drawable/button_rounded" />
 		<!-- style="?android:attr/buttonStyleSmall" -->
 	</LinearLayout>
 

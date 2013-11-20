@@ -26,6 +26,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.Toast;
+
+
+
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
@@ -43,8 +50,11 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 	private PostBaseAdapter cAdapter;
 	private TelephonyManager mTelephonyManager;
 	private EndlessAdapter adp; 
+<<<<<<< HEAD
 	private int mPostPosition;
 
+=======
+>>>>>>> 522f646c93c1d4b6be0b0b4516ea02f7cd2c3a29
 	private int offset = 0, limit = 10;
 
 	@Override
@@ -106,6 +116,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 	@Override
 	public void loadData() {
+		offset = offset + limit;
 		new LoadMore().execute("http://www.reliefboard.com/messages/feed/?offset=" + offset + "&limit=" + limit);
 
 	}
@@ -302,12 +313,10 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		//private ProgressDialog Dialog;
 		private SQLiteAdapter mySQLiteAdapter;
 
-
 		protected void onPreExecute() {
 		
 			mySQLiteAdapter = new SQLiteAdapter(ReliefBoardShowPost.this);
 		}
-
 
 		protected String doInBackground(String... urls) {
 
@@ -378,8 +387,6 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 				ArrayList<PostObjectPOJO> ObjectList = new ArrayList<PostObjectPOJO>();
 				try {
-					//ClearCache.trimCache(MainPage.this);
-					
 
 					jsonResponse = new JSONObject(content);
 
@@ -467,9 +474,5 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		}
 
 	}
-
-	
-
-
 
 }
