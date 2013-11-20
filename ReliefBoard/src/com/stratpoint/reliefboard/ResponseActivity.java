@@ -55,12 +55,16 @@ public class ResponseActivity extends SherlockFragmentActivity implements Loader
 			responseLoader.setName(mName.getText().toString());
 			responseLoader.setMessage(mMessage.getText().toString());
 			responseLoader.setParentId(mPostId);
+			responseLoader.forceLoad();
 			return responseLoader;
 		}
 		
 		@Override
 		public void onLoadFinished(Loader<JSONObject> loader, JSONObject result) {
 			Log.d("RespondResult", result.toString());
+			
+//			RESPONSE
+//			{"compress_output":true,"memory_usage":"1.07MB","method":"POST","status":"Success","ellapsed_time":8.4183828830719}
 		}
 		
 		@Override
@@ -68,20 +72,11 @@ public class ResponseActivity extends SherlockFragmentActivity implements Loader
 	};
 
 	@Override
-	public Loader<JSONObject> onCreateLoader(int arg0, Bundle arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public Loader<JSONObject> onCreateLoader(int arg0, Bundle arg1) { return null; }
 
 	@Override
-	public void onLoadFinished(Loader<JSONObject> arg0, JSONObject arg1) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onLoadFinished(Loader<JSONObject> arg0, JSONObject arg1) {}
 
 	@Override
-	public void onLoaderReset(Loader<JSONObject> arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onLoaderReset(Loader<JSONObject> arg0) {}
 }
