@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- app -->
+    <string name="app_id">2b198w.reliefboard.web</string>
+    <string name="app_name">ReliefBoard</string>
+    
+    <!-- Action Settings -->
+    <string name="action_settings">Settings</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="post_message">Post Message</string>
+
+    <!-- List of posts -->
+    <string name="responses">Responses</string>
+
+    <!-- Responses -->
+    <string name="respond">Respond</string>
+    <string name="your_name">Your Name</string>
+    <string name="your_message">Your Message</string>
+    
+    <!-- app -->
+    <string name="app_id">2b198w.reliefboard.web</string>
+    <string name="title_activity_post__message">Post_Message</string>
+
+</resources>
