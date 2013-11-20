@@ -15,13 +15,16 @@ public class ReliefBoardConstants {
 	 /**
      * All Api name should be place here.
      */
-	public static class Api {}
+	public static class Api {
+		public static final String RESPONSE = "/messages/feed/";
+	}
 
 	/**
      * All extra name should be place here.
      */
 	public static class Extra {
 		public static final String POST = "post";
+		public static final String POST_ID = "post_id";
 	}
 
 	/**
@@ -32,7 +35,9 @@ public class ReliefBoardConstants {
 	/**
      * All loader Ids should be place here.
      */
-	public static class LoaderId {}
+	public static class LoaderId {
+		public static final int Response = 0x0a1;
+	}
 	
 	/**
      * All global objects should be place here.

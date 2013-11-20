@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<!-- app -->
+    <string name="app_id">2b198w.reliefboard.web</string>
     <string name="app_name">ReliefBoard</string>
+    
+    <!-- Action Settings -->
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="send_sms">Send SMS</string>
 
     <!-- List of posts -->
     <string name="responses">Responses</string>
-    
-    <!-- app -->
-    <string name="app_id">2b198w.reliefboard.web</string>
+
+    <!-- Responses -->
+    <string name="respond">Respond</string>
+    <string name="your_name">Your Name</string>
+    <string name="your_message">Your Message</string>
     
 </resources>

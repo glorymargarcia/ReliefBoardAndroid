@@ -219,9 +219,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 						String appName = DatabaseUtils.sqlEscapeString(result.getString("app_name").toString().trim());
 						String dateCreated = result.getString("date_created").toString().trim();
-						String fbPostLink = "";
-						if(result.has("fb_post_link"))
-							fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
+						String fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
 						String postID = result.getString("id").toString().trim();
 						String logo = result.getString("logo").toString().trim();
 						String message = URLDecoder.decode(URLDecoder.decode(result.getString("message")));

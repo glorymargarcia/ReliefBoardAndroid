@@ -3,19 +3,27 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:padding="8dp" >
-	
-	<EditText 
+
+	<EditText
 		android:id="@+id/et_name"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Your Name" />
+		android:hint="@string/your_name" />
 
-	<EditText 
+	<EditText
 		android:id="@+id/et_message"
 		android:layout_width="match_parent"
 		android:layout_height="100dp"
-		android:hint="Your Message"
 		android:layout_below="@id/et_name"
+		android:hint="@string/your_message"
 		android:paddingTop="10dp" />
-	
+
+	<Button
+		android:id="@+id/btn_respond"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/et_message"
+		android:layout_marginTop="10dp"
+		android:text="@string/respond" />
+
 </RelativeLayout>
