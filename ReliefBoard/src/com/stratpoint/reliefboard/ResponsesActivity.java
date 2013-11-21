@@ -1,15 +1,20 @@
 package com.stratpoint.reliefboard;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,13 +23,15 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.stratpoint.reliefboard.adapter.ResponsesAdapter;
 import com.stratpoint.reliefboard.loader.ResponseLoader;
+import com.stratpoint.reliefboard.model.ResponseHelp;
+import com.stratpoint.reliefboard.util.JSONParser;
 import com.stratpoint.reliefboard.util.ReliefBoardConstants;
 import com.stratpoint.reliefboardandroid.R;
 
 public class ResponsesActivity extends SherlockFragmentActivity implements LoaderManager.LoaderCallbacks<JSONObject>{
 
-	private ListView mListReply;
 	private String mPostMessage;
 	private String mPostId;
 	private String mUsername;
@@ -32,6 +39,11 @@ public class ResponsesActivity extends SherlockFragmentActivity implements Loade
 	
 	private EditText mName;
 	private EditText mMessage;
+	private ListView mListReply;
+	
+	private ResponsesAdapter mAdapter;
+	private ResponseHelp mPostHelp;
+	private List<ResponseHelp> mResponses = new ArrayList<ResponseHelp>();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -49,8 +61,53 @@ public class ResponsesActivity extends SherlockFragmentActivity implements Loade
 			mPlaceTag = getIntent().getExtras().getString(ReliefBoardConstants.Extra.PLACE_TAG);
 		}
 		
+		getSupportLoaderManager().restartLoader(ReliefBoardConstants.LoaderId.Comments, null, mComments);
+		
 		setUpViews();
 	}
+	
+private final LoaderManager.LoaderCallbacks<JSONObject> mComments = new LoaderCallbacks<JSONObject>() {
+		
+		@Override
+		public Loader<JSONObject> onCreateLoader(int id, Bundle bundle) {
+			ResponseLoader commentsLoader = new ResponseLoader(getApplicationContext());
+			commentsLoader.setRequestMethod(ResponseLoader.REQUEST_MEHTOD_GET);
+			commentsLoader.setParentId(mPostId);
+			commentsLoader.forceLoad();
+			return commentsLoader;
+		}
+		
+		@Override
+		public void onLoadFinished(Loader<JSONObject> loader, JSONObject result) {
+			Log.d("Comments", result.toString());
+			
+			try {
+				String status = result.getString("status");
+				
+				if(status.equals("Success")){
+					JSONArray jsonResponse = result.getJSONObject("data").getJSONArray("result");
+					
+					for(int i=0; i<jsonResponse.length(); i++){
+						JSONObject jsonItem = jsonResponse.getJSONObject(i);
+						mPostHelp = JSONParser.parseJSONToResponseHelp(jsonItem);
+						mPostHelp.setMessage(mPostHelp.getMessage());
+						mPostHelp.setSender(mPostHelp.getSender());
+						mPostHelp.setPlaceTag(mPostHelp.getPlaceTag());
+					}
+					mResponses.add(mPostHelp);
+					mListReply.getAdapter().notify();
+//					mAdapter.notifyDataSetChanged();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		@Override
+		public void onLoaderReset(Loader<JSONObject> loader) {}
+		
+	};
 	
 	private void setUpViews(){
 		mListReply = (ListView) findViewById(R.id.list_reply);
@@ -71,18 +128,21 @@ public class ResponsesActivity extends SherlockFragmentActivity implements Loade
 			}
 		});
 		
-		String[] values = new String[] { "Android List View", "Adapter implementation", "Simple List View In Android", "Create List View Android", "Android Example", "List View Source Code", "List View Array Adapter", "Android Example List View" };
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
+//		String[] values = new String[] { "Android List View", "Adapter implementation", "Simple List View In Android", "Create List View Android", "Android Example", "List View Source Code", "List View Array Adapter", "Android Example List View" };
+//		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, values);
 		
 		View headerView = LayoutInflater.from(this).inflate(R.layout.adapter_post, null);
 		
-		TextView userPost = (TextView) headerView.findViewById(R.id.user_post);
+		TextView userPost = (TextView) headerView.findViewById(R.id.user_comment);
 		TextView userSender = (TextView) headerView.findViewById(R.id.user_name);
 		userPost.setText(mPostMessage);
 		userSender.setText(mUsername + " | " + mPlaceTag);
-		
+
 		mListReply.addHeaderView(headerView);
-		mListReply.setAdapter(adapter);
+
+		Log.d("Responses", mResponses+"");
+		mAdapter = new ResponsesAdapter(this, R.layout.adapter_response, mResponses);
+		mListReply.setAdapter(mAdapter);
 	}
 	
 	private final LoaderManager.LoaderCallbacks<JSONObject> mSendARespond = new LoaderManager.LoaderCallbacks<JSONObject>() {
@@ -90,6 +150,7 @@ public class ResponsesActivity extends SherlockFragmentActivity implements Loade
 		@Override
 		public Loader<JSONObject> onCreateLoader(int id, Bundle bundle) {
 			ResponseLoader responseLoader = new ResponseLoader(getApplicationContext());
+			responseLoader.setRequestMethod(ResponseLoader.REQUEST_METHOD_POST);
 			responseLoader.setAppId(getResources().getString(R.string.app_id));
 			responseLoader.setName(mName.getText().toString());
 			responseLoader.setMessage(mMessage.getText().toString());
