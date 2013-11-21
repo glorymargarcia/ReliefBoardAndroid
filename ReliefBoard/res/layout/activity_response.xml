@@ -4,26 +4,39 @@
 	android:layout_height="match_parent"
 	android:padding="8dp" >
 
-	<EditText
-		android:id="@+id/et_name"
+	<ListView
+		android:id="@+id/list_response"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/your_name" />
+		android:layout_marginBottom="10dp"
+		android:scrollbars="none"  />
 
-	<EditText
-		android:id="@+id/et_message"
-		android:layout_width="match_parent"
-		android:layout_height="100dp"
-		android:layout_below="@id/et_name"
-		android:hint="@string/your_message"
-		android:paddingTop="10dp" />
-
-	<Button
-		android:id="@+id/btn_respond"
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/et_message"
-		android:layout_marginTop="10dp"
-		android:text="@string/respond" />
+		android:layout_below="@id/list_response" >
+
+		<EditText
+			android:id="@+id/et_name"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/your_name" />
+
+		<EditText
+			android:id="@+id/et_message"
+			android:layout_width="match_parent"
+			android:layout_height="100dp"
+			android:layout_below="@id/et_name"
+			android:hint="@string/your_message"
+			android:paddingTop="10dp" />
+
+		<Button
+			android:id="@+id/btn_respond"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/et_message"
+			android:layout_marginTop="10dp"
+			android:text="@string/respond" />
+	</RelativeLayout>
 
 </RelativeLayout>

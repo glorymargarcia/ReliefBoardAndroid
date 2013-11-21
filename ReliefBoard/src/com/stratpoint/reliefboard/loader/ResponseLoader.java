@@ -7,16 +7,19 @@ import android.support.v4.content.AsyncTaskLoader;
 
 import com.stratpoint.reliefboard.api.ApiRequest;
 import com.stratpoint.reliefboard.util.ReliefBoardConstants;
+import com.stratpoint.reliefboardandroid.R;
 
 public class ResponseLoader extends AsyncTaskLoader<JSONObject>{
 
 	public static final int REQUEST_METHOD_POST = 0x0f1;
+	public static final int REQUEST_MEHTOD_GET = 0x0f2;
 	private int mRequestMethod = REQUEST_METHOD_POST;
 	
 	private String appId;
 	private String name;
 	private String message;
 	private String parentId;
+	private String messageId;
 	
 	public ResponseLoader(Context context) {
 		super(context);
@@ -36,6 +39,16 @@ public class ResponseLoader extends AsyncTaskLoader<JSONObject>{
 									   .addParameter("parent_id", parentId)
 									   .post(ApiRequest.getApiUrl() + ReliefBoardConstants.Api.RESPONSE);
 				
+				break;
+				
+			case REQUEST_MEHTOD_GET:
+				jsonResult = ApiRequest.getInstance()
+										.addParameter("parent_id", parentId)
+//										.addParameter("message_id", messageId)
+//										.addParameter("offset", "0")
+//										.addParameter("limit", "10")
+//										.addParameter("app_id", getContext().getResources().getString(R.string.app_id))
+										.get(ApiRequest.getApiUrl() + ReliefBoardConstants.Api.COMMENTS);
 				break;
 			}
 			
@@ -64,6 +77,10 @@ public class ResponseLoader extends AsyncTaskLoader<JSONObject>{
 
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
+	}
+
+	public void setMessageId(String messageId) {
+		this.messageId = messageId;
 	}
 	
 }

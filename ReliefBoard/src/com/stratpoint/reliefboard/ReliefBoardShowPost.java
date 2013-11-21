@@ -125,9 +125,12 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		@Override
 		public void onResponseClick(PostObjectPOJO post, int position) {
 			mPostPosition = position;
-			Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
-//			intent.putExtra(ReliefBoardConstants.Extra.POST, post);
+//			Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
+			Intent intent = new Intent(getApplicationContext(), ResponsesActivity.class);
+			intent.putExtra(ReliefBoardConstants.Extra.USERNAME, post.GetSender());
+			intent.putExtra(ReliefBoardConstants.Extra.POST_MESSAGE, post.GetMessage());
 			intent.putExtra(ReliefBoardConstants.Extra.POST_ID, post.GetPostID());
+			intent.putExtra(ReliefBoardConstants.Extra.PLACE_TAG, post.GetPlaceTag());
 			startActivity(intent);
 		}
 	};

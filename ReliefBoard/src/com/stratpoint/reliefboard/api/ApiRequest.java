@@ -15,7 +15,7 @@ import org.json.JSONObject;
 public class ApiRequest extends ApiRequestBase {
     public static ApiRequest mApiRequest;
     private  Map<String, Object> mParameters = new HashMap<String, Object>();
-    private static final boolean IS_DEVELOPMENT = true;
+    private static final boolean IS_DEVELOPMENT = false;
     private static final String DEVELOPMENT_URL = "";
 //    private static final String PUSH_SERVER_URL = "prod";
 //    private static final String PUSH_SERVER_URL = "dev";

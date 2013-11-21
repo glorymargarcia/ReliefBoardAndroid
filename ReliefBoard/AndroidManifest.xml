@@ -41,11 +41,11 @@
         <activity
             android:name="com.stratpoint.reliefboard.SendSMSActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name="com.stratpoint.reliefboard.ResponseActivity" />
         <activity
             android:name="com.stratpoint.reliefboard.PostMessage"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
+        <activity android:name="com.stratpoint.reliefboard.ResponsesActivity" />
     </application>
 
 </manifest>
