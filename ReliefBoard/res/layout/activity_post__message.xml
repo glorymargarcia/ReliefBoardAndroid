@@ -9,7 +9,54 @@
     tools:context=".Post_Message" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Username: " />
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_username"
+        android:layout_below="@+id/et_username"
+        android:layout_marginTop="15dp"
+        android:text="Body: " />
+
+    <EditText
+        android:id="@+id/et_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_below="@+id/textView2"
+        android:minHeight="100dp"
+        android:singleLine="false"
+        android:ems="10" />
+
+    <Button
+        android:id="@+id/btn_post_message"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/et_body"
+        android:layout_below="@+id/et_body"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_rounded"
+        android:text="Post A New Message" />
 
 </RelativeLayout>
