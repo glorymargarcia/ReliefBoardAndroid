@@ -20,7 +20,7 @@ public class ResponsesAdapter extends ArrayAdapter<ResponseHelp> {
 	public ResponsesAdapter(Context context, int layoutResourceId, List<ResponseHelp> posts) {
 		super(context, layoutResourceId);
 		mLayoutResourceId = layoutResourceId;
-		posts = mPosts;
+		mPosts= posts;
 		mInflater = LayoutInflater.from(context);
 	}
 
@@ -40,10 +40,17 @@ public class ResponsesAdapter extends ArrayAdapter<ResponseHelp> {
 			viewHolder = (ViewHolder) view.getTag();
 		}
 		
-		viewHolder.user_name.setText(post.getMessage());
+		viewHolder.user_name.setText(post.getSender());
+		viewHolder.user_response.setText(post.getMessage());
 		
 		return view;
 	}
+	
+	@Override
+	public int getCount() {		
+		return mPosts.size() ;
+	}
+	
 	
 	private class ViewHolder {
 		public TextView user_name;

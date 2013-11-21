@@ -1,5 +1,6 @@
 package com.stratpoint.reliefboard;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class ResponsesActivity extends SherlockFragmentActivity implements Loade
 	
 	private ResponsesAdapter mAdapter;
 	private ResponseHelp mPostHelp;
-	private List<ResponseHelp> mResponses = new ArrayList<ResponseHelp>();
+	private List<ResponseHelp> mResponses; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -77,6 +78,7 @@ private final LoaderManager.LoaderCallbacks<JSONObject> mComments = new LoaderCa
 			return commentsLoader;
 		}
 		
+		@SuppressWarnings("deprecation")
 		@Override
 		public void onLoadFinished(Loader<JSONObject> loader, JSONObject result) {
 			Log.d("Comments", result.toString());
@@ -86,17 +88,22 @@ private final LoaderManager.LoaderCallbacks<JSONObject> mComments = new LoaderCa
 				
 				if(status.equals("Success")){
 					JSONArray jsonResponse = result.getJSONObject("data").getJSONArray("result");
-					
+					mResponses.clear();
 					for(int i=0; i<jsonResponse.length(); i++){
 						JSONObject jsonItem = jsonResponse.getJSONObject(i);
+						mPostHelp = new ResponseHelp();
 						mPostHelp = JSONParser.parseJSONToResponseHelp(jsonItem);
-						mPostHelp.setMessage(mPostHelp.getMessage());
-						mPostHelp.setSender(mPostHelp.getSender());
+						mPostHelp.setMessage(URLDecoder.decode(URLDecoder.decode(mPostHelp.getMessage())));
+						mPostHelp.setSender(URLDecoder.decode(URLDecoder.decode(mPostHelp.getSender())));
 						mPostHelp.setPlaceTag(mPostHelp.getPlaceTag());
+						mResponses.add(mPostHelp);
 					}
-					mResponses.add(mPostHelp);
-					mListReply.getAdapter().notify();
-//					mAdapter.notifyDataSetChanged();
+					//mAdapter = new ResponsesAdapter(ResponsesActivity.this, R.layout.adapter_response, mResponses);
+					//mListReply.setAdapter(mAdapter);
+					
+					//mListReply.getAdapter().notify();
+				
+					mAdapter.notifyDataSetChanged();
 				}
 				
 			} catch (Exception e) {
@@ -141,8 +148,10 @@ private final LoaderManager.LoaderCallbacks<JSONObject> mComments = new LoaderCa
 		mListReply.addHeaderView(headerView);
 
 		Log.d("Responses", mResponses+"");
-		mAdapter = new ResponsesAdapter(this, R.layout.adapter_response, mResponses);
+		mResponses = new ArrayList<ResponseHelp>();
+		mAdapter = new ResponsesAdapter(ResponsesActivity.this, R.layout.adapter_response, mResponses);
 		mListReply.setAdapter(mAdapter);
+		
 	}
 	
 	private final LoaderManager.LoaderCallbacks<JSONObject> mSendARespond = new LoaderManager.LoaderCallbacks<JSONObject>() {
