@@ -15,7 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.DatabaseUtils;
@@ -25,7 +27,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.stratpoint.reliefboard.PostDialogFragment.onSubmitListener;
 import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
@@ -68,16 +75,33 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		return true;
 	}
 
+	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item) { 
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			startActivity(new Intent(ReliefBoardShowPost.this, SendSMSActivity.class));
 		case R.id.post_message:
+			AddNewPost();
 //			startActivity(new Intent(ReliefBoardShowPost.this, PostMessage.class));
 		}
 		return false;
+	}
+	
+	private void AddNewPost(){ 
+		final Dialog dialog = new Dialog(ReliefBoardShowPost.this);
+		//dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);  
+		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  
+		dialog.setContentView(R.layout.activity_post__message);
+		
+		EditText etName = (EditText) dialog.findViewById(R.id.et_name);
+		EditText etBody = (EditText) dialog.findViewById(R.id.et_body);
+		
+		if (!etName.getText().equals("") ||!etBody.getText().equals("")){
+			Toast.makeText(getApplicationContext(), "HAHA", Toast.LENGTH_LONG).show();
+		}
+		dialog.show();
 	}
 
 	private final PostActionListener mPostActionListener = new PostActionListener() {
@@ -389,7 +413,9 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 						String appName = DatabaseUtils.sqlEscapeString(result.getString("app_name").toString().trim());
 						String dateCreated = result.getString("date_created").toString().trim();
-						String fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
+						String fbPostLink="";
+						if(result.has("fb_post_link"))
+							fbPostLink = URLDecoder.decode(URLDecoder.decode(result.getString("fb_post_link").toString().trim()));
 						String postID = result.getString("id").toString().trim();
 						String logo = result.getString("logo").toString().trim();
 						String message = URLDecoder.decode(URLDecoder.decode(result.getString("message")));
@@ -466,4 +492,6 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 	}
 
+	
+	
 }
