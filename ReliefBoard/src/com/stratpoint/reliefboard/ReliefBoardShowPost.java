@@ -27,8 +27,11 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -89,18 +92,31 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		return false;
 	}
 	
-	private void AddNewPost(){ 
+	private void AddNewPost(){  
 		final Dialog dialog = new Dialog(ReliefBoardShowPost.this);
 		//dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);  
 		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  
 		dialog.setContentView(R.layout.activity_post__message);
 		
-		EditText etName = (EditText) dialog.findViewById(R.id.et_name);
-		EditText etBody = (EditText) dialog.findViewById(R.id.et_body);
+		final EditText etName = (EditText) dialog.findViewById(R.id.et_username);
+		final EditText etBody = (EditText) dialog.findViewById(R.id.et_body);
+		Button btnPost = (Button) dialog.findViewById(R.id.btn_post_message);
+		btnPost.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				if (!etName.getText().equals("") ||!etBody.getText().equals("")){
+					Toast.makeText(getApplicationContext(), "HAHA", Toast.LENGTH_LONG).show();
+				}
+				else{
+					
+				}
+				
+			}
+		});
 		
-		if (!etName.getText().equals("") ||!etBody.getText().equals("")){
-			Toast.makeText(getApplicationContext(), "HAHA", Toast.LENGTH_LONG).show();
-		}
+		
 		dialog.show();
 	}
 
