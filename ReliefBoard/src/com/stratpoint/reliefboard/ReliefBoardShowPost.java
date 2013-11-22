@@ -23,6 +23,9 @@ import android.content.Intent;
 import android.database.DatabaseUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -40,12 +43,13 @@ import com.stratpoint.reliefboard.adapter.EndlessAdapter;
 import com.stratpoint.reliefboard.adapter.PostBaseAdapter;
 import com.stratpoint.reliefboard.adapter.SQLiteAdapter;
 import com.stratpoint.reliefboard.listener.PostActionListener;
+import com.stratpoint.reliefboard.loader.ResponseLoader;
 import com.stratpoint.reliefboard.model.PostObjectPOJO;
 import com.stratpoint.reliefboard.util.ReliefBoardConstants;
 import com.stratpoint.reliefboardandroid.R;
 
 
-public class ReliefBoardShowPost extends Activity implements EndlessListView.EndlessListener {
+public class ReliefBoardShowPost extends FragmentActivity implements EndlessListView.EndlessListener{
 
 	private SQLiteAdapter mySQLiteAdapter;
 	private List<PostObjectPOJO> postObjectList;
@@ -54,7 +58,12 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 	private TelephonyManager mTelephonyManager;
 	private EndlessAdapter adp; 
 	private int mPostPosition;
-
+	private EditText etName; 
+	private EditText etBody;
+	private Button btnPost;
+	
+	private Dialog dialog;
+			
 	private int offset = 0, limit = 10;
 
 	@Override
@@ -92,26 +101,25 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		return false;
 	}
 	
-	private void AddNewPost(){  
-		final Dialog dialog = new Dialog(ReliefBoardShowPost.this);
+	private void AddNewPost(){   
+		dialog = new Dialog(ReliefBoardShowPost.this);
 		//dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);  
 		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);  
 		dialog.setContentView(R.layout.activity_post__message);
 		
-		final EditText etName = (EditText) dialog.findViewById(R.id.et_username);
-		final EditText etBody = (EditText) dialog.findViewById(R.id.et_body);
-		Button btnPost = (Button) dialog.findViewById(R.id.btn_post_message);
+		etName= (EditText) dialog.findViewById(R.id.et_username);
+		etBody = (EditText) dialog.findViewById(R.id.et_body);
+		btnPost = (Button) dialog.findViewById(R.id.btn_post_message);
 		btnPost.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
+			public void onClick(View arg0) { 
 				// TODO Auto-generated method stub
 				if (!etName.getText().equals("") ||!etBody.getText().equals("")){
-					Toast.makeText(getApplicationContext(), "HAHA", Toast.LENGTH_LONG).show();
-				}
-				else{
-					
-				}
+					//Toast.makeText(getApplicationContext(), "HAHA", Toast.LENGTH_LONG).show();
+					getSupportLoaderManager().restartLoader(ReliefBoardConstants.LoaderId.Respond, null, mSendAPost);
+					dialog.dismiss();
+				}				
 				
 			}
 		});
@@ -124,6 +132,7 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 		
 		@Override
 		public void onResponseClick(PostObjectPOJO post, int position) {
+
 			mPostPosition = position;
 //			Intent intent = new Intent(getApplicationContext(), ResponseActivity.class);
 			Intent intent = new Intent(getApplicationContext(), ResponsesActivity.class);
@@ -150,6 +159,45 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 	}
 
+	private final LoaderManager.LoaderCallbacks<JSONObject> mSendAPost= new LoaderManager.LoaderCallbacks<JSONObject>() {
+
+		@Override
+		public Loader<JSONObject> onCreateLoader(int id, Bundle bundle) {
+			ResponseLoader responseLoader = new ResponseLoader(getApplicationContext());
+			responseLoader.setRequestMethod(ResponseLoader.REQUEST_METHOD_POST);
+			responseLoader.setAppId(getResources().getString(R.string.app_id));
+			responseLoader.setName(etName.getText().toString());
+			responseLoader.setMessage(etBody.getText().toString());
+			responseLoader.forceLoad();
+			return responseLoader;
+		}
+
+		@Override
+		public void onLoadFinished(Loader<JSONObject> loader, JSONObject result) {
+			String status;
+			try {
+				status = result.getString("status");
+
+				if (status.equals("Success")) {
+					
+					
+				Toast.makeText(ReliefBoardShowPost.this, "Post Successful", Toast.LENGTH_LONG).show();
+				offset = 0;
+				new MainOperation().execute("http://www.reliefboard.com/messages/feed/?offset=" + offset + "&limit=" + limit);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			// RESPONSE
+			// {"compress_output":true,"memory_usage":"1.07MB","method":"POST","status":"Success","ellapsed_time":8.4183828830719}
+		}
+
+		@Override
+		public void onLoaderReset(Loader<JSONObject> arg0) {
+		}
+	};
+	
 	private class MainOperation  extends AsyncTask<String, Void, String> {
 
 		private String Error = null;
@@ -508,6 +556,9 @@ public class ReliefBoardShowPost extends Activity implements EndlessListView.End
 
 	}
 
+	
+
+	
 	
 	
 }

@@ -13,6 +13,7 @@ public class ResponseLoader extends AsyncTaskLoader<JSONObject>{
 
 	public static final int REQUEST_METHOD_POST = 0x0f1;
 	public static final int REQUEST_MEHTOD_GET = 0x0f2;
+	public static final int REQUEST_METHOD_POST_MAIN = 0x0f3;
 	private int mRequestMethod = REQUEST_METHOD_POST;
 	
 	private String appId;
@@ -50,7 +51,19 @@ public class ResponseLoader extends AsyncTaskLoader<JSONObject>{
 //										.addParameter("app_id", getContext().getResources().getString(R.string.app_id))
 										.get(ApiRequest.getApiUrl() + ReliefBoardConstants.Api.COMMENTS);
 				break;
+			
+			case REQUEST_METHOD_POST_MAIN:
+				jsonResult = ApiRequest.getInstance()
+									   .addParameter("app_id", appId)
+									   .addParameter("name", name)
+									   .addParameter("message", message)
+									   .post(ApiRequest.getApiUrl() + ReliefBoardConstants.Api.RESPONSE);
+				
+				break;
+			
 			}
+			
+		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
